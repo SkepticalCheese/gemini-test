@@ -1,5 +1,4 @@
-/* eslint-disable @next/next/no-html-link-for-pages */
-import { auth0 } from '../../lib/auth0'
+import { auth0 } from '@/lib/auth0'
 import { Button } from '@/components/ui/button';
 //import Link from 'next/link';
 

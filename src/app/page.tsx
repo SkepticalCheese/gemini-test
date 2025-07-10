@@ -1,25 +1,34 @@
-/* eslint-disable @next/next/no-html-link-for-pages */
 import { Button } from "@/components/ui/button";
-import { auth0 } from '../lib/auth0'
+import { auth0 } from '@/lib/auth0'
 //import Link from "next/link";
 
 export default async function Home() {
+  // Fetch the user session
   const session = await auth0.getSession();
-  
-  if (session) {
+
+  // If no session, show sign-up and login buttons
+  if (!session) {
     return (
       <main>
-        <a href="/welcome">Welcome Page</a>
+        <a href="/auth/login?screen_hint=signup">
+          <Button>Sign up</Button>
+        </a>
+        <a href="/auth/login">
+          <Button>Log in</Button>
+        </a>
       </main>
     );
   }
 
-
+  // If session exists, show a welcome message and logout button
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <a href="/auth/login">
-        <Button>Login</Button>
-      </a>
+    <main>
+      <h1>Welcome, {session.user.name}!</h1>
+      <p>
+        <a href="/auth/logout">
+          <Button>Log out</Button>
+        </a>
+      </p>
     </main>
   );
 }
