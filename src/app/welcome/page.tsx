@@ -1,9 +1,9 @@
-import { getSession } from '@auth0/nextjs-auth0';
+import { auth0 } from '../../lib/auth0'
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export default async function Welcome() {
-  const session = await getSession();
+  const session = await auth0.getSession();
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
