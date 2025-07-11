@@ -1,9 +1,9 @@
 import prisma from '@/lib/prisma';
 import { SessionData } from '@auth0/nextjs-auth0/types';
 
-export async function getUserName(session: SessionData | null) {
+export async function getUser(session: SessionData | null) {
   if (!session?.user?.sub) {
-    return session?.user.name;
+    return null;
   }
 
   const user = await prisma.user.findUnique({
@@ -12,8 +12,9 @@ export async function getUserName(session: SessionData | null) {
     },
     select: {
       name: true,
+      tenant_id: true,
     },
   });
 
-  return user?.name || session.user.name;
+  return user;
 }
