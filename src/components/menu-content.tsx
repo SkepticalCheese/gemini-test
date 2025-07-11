@@ -3,15 +3,19 @@ import Link from 'next/link'
 import { NavigationLink } from '@/components/navigation-link'
 import { LINKS } from '@/lib/constants'
 import { auth0 } from '@/lib/auth0'
+import { getUserName } from '@/lib/user';
 
 export const MenuContent = async() => {
+  
   const session = await auth0.getSession();
+  const userName = await getUserName(session);
+  
   return (
   <div className="flex w-full flex-col text-sm">
     <div className="flex flex-col gap-4">
       <Link href="/" className="link-card inline-flex items-center gap-2 p-2">
         <div className="flex flex-col">
-          <span className="font-semibold tracking-tight">{session?.user.name}</span>
+          <span className="font-semibold tracking-tight">{userName}</span>
         </div>
       </Link>
       <div className="flex flex-col gap-1">

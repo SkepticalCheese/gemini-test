@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { auth0 } from '@/lib/auth0'
-//import Link from "next/link";
+import { getUserName } from "@/lib/user";
 
 export default async function Home() {
-  // Fetch the user session
   const session = await auth0.getSession();
+  const userName = await getUserName(session);
 
   // If no session, show sign-up and login buttons
-  if (!session) {
+  if (!userName) {
     return (
       <main>
         <a href="/auth/login?screen_hint=signup">
@@ -23,7 +23,7 @@ export default async function Home() {
   // If session exists, show a welcome message and logout button
   return (
     <main>
-      <h1>Welcome, {session.user.name}!</h1>
+      <h1>Welcome, {userName}!</h1>
       <p>
         <a href="/auth/logout">
           <Button>Log out</Button>
