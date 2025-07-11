@@ -14,6 +14,7 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Shadcn UI, 
 
 - Use lowercase with dashes for directories (e.g., components/auth-wizard).
 - Favor named exports for components.
+- Use snake case for database table and column names (lowercase names with underscores to separate words) such as company_contact and contact_name
 
 ## TypeScript Usage
 
