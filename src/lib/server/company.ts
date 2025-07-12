@@ -23,6 +23,20 @@ export async function getCompanies(user: UserType) {
   }));
 }
 
+export async function getCompanyList(user: UserType) {
+  const companies = await prisma.company.findMany({
+    where: {
+      tenant_id: user?.tenant_id,
+    },
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  return companies;
+}
+
 export async function updateCompany(id: number, name: string) {
   await prisma.company.update({
     where: { id: id },

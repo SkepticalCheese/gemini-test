@@ -18,3 +18,26 @@ export async function getContacts(user: UserType) {
 
   return contacts;
 }
+
+export async function updateContact(id: number, name: string, email: string, phone: string, company_id: number) {
+  await prisma.contact.update({
+    where: { id: id },
+    data: { 
+      name,
+      email,
+      phone,
+      company_id
+    },
+  });
+}
+
+export async function addContact(user: UserType, name: string, email: string, phone: string, company_id: number) {
+  await prisma.contact.create({
+    data: {
+      name,
+      email,
+      phone,
+      company_id
+    },
+  });
+}
