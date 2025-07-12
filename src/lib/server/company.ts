@@ -22,3 +22,10 @@ export async function getCompanies(user: UserType) {
     contactCount: company.Contact.length,
   }));
 }
+
+export async function updateCompany(id: number, name: string) {
+  await prisma.company.update({
+    where: { id: id },
+    data: { name },
+  });
+}
