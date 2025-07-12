@@ -9,10 +9,9 @@ interface NavigationLinkProps {
   href: string
   label: string
   icon: React.ReactNode
-  shortcutNumber?: number
 }
 
-export function NavigationLink({ href, label, icon, shortcutNumber }: NavigationLinkProps) {
+export function NavigationLink({ href, label, icon }: NavigationLinkProps) {
   const pathname = usePathname()
   const isActive = pathname === href
 
@@ -28,16 +27,6 @@ export function NavigationLink({ href, label, icon, shortcutNumber }: Navigation
         {icon}
         <span className="font-medium">{label}</span>
       </div>
-      {shortcutNumber && (
-        <span
-          className={cn(
-            'hidden h-5 w-5 place-content-center rounded-md bg-gray-100 text-xs font-medium text-gray-500 group-hover:bg-gray-200 lg:grid',
-            isActive && 'bg-gray-200 text-gray-600 group-hover:bg-gray-300'
-          )}
-        >
-          {shortcutNumber}
-        </span>
-      )}
-    </Link>
+      </Link>
   )
 }

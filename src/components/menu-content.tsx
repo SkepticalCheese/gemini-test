@@ -19,13 +19,13 @@ export const MenuContent = async() => {
         </div>
       </Link>
       <div className="flex flex-col gap-1">
-        {LINKS.map((link, linkIndex) => (
+        {LINKS.map((link) => (
           <NavigationLink
             key={link.href}
             href={link.href}
             label={link.label}
             icon={link.icon}
-            shortcutNumber={linkIndex + 1}
+            
           />
         ))}
       </div>
