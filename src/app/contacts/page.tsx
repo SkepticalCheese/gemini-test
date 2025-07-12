@@ -14,14 +14,6 @@ export default async function Contacts() {
   const session = await auth0.getSession();
   const user = await getUser(session);
 
-  if (!session || !user) {
-    return (
-      <main>
-        <a href="/auth/login">Log in</a>
-      </main>
-    );
-  }
-
   const contacts = await getContacts (user);
 
   return (

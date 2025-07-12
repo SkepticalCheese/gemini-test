@@ -6,20 +6,6 @@ export default async function Home() {
   const session = await auth0.getSession();
   const user = await getUser(session);
 
-  // If no session, show sign-up and login buttons
-  if (!session || !user) {
-    return (
-      <main>
-        <a href="/auth/login?screen_hint=signup">
-          <Button>Sign up</Button>
-        </a>
-        <a href="/auth/login">
-          <Button>Log in</Button>
-        </a>
-      </main>
-    );
-  }
-
   // If session exists, show a welcome message and logout button
   return (
     <main className="flex min-h-screen flex-col justify-start p-24">
