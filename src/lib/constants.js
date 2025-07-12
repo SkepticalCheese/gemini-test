@@ -1,5 +1,5 @@
 
-import { HomeIcon, UserIcon, LogOutIcon, ContactIcon } from 'lucide-react'
+import { HomeIcon, LogOutIcon, ContactIcon } from 'lucide-react'
 
 export const LINKS = [
   {
