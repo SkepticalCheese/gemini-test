@@ -29,3 +29,12 @@ export async function updateCompany(id: number, name: string) {
     data: { name },
   });
 }
+
+export async function addCompany(user: UserType, name: string) {
+  await prisma.company.create({
+    data: {
+      name,
+      tenant_id: user?.tenant_id || 0,
+    },
+  });
+}

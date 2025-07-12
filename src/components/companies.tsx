@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { updateCompany } from '@/lib/server/company';
+import { updateCompany, addCompany } from '@/lib/server/company';
 import {
   Table,
   TableBody,
@@ -23,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+import { UserType } from '@/lib/server/user';
 
 interface CompaniesPageProps {
   companies: {
@@ -31,28 +32,73 @@ interface CompaniesPageProps {
     createdAt: Date;
     contactCount: number;
   }[];
+  user: UserType;
 }
 
-export function Companies({ companies }: CompaniesPageProps) {
+export function Companies({ companies, user }: CompaniesPageProps) {
   const router = useRouter();
 
   const [editingCompanyId, setEditingCompanyId] = useState<number | null>(null);
   const [editingCompanyName, setEditingCompanyName] = useState<string>('');
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
-  const handleSave = async () => {
+  const [newCompanyName, setNewCompanyName] = useState<string>('');
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+
+  const handleEditSave = async () => {
     if (editingCompanyId && editingCompanyName) {
       await updateCompany(editingCompanyId, editingCompanyName);
-      setIsDialogOpen(false);
+      setIsEditDialogOpen(false);
       setEditingCompanyId(null);
       setEditingCompanyName('');
       router.refresh(); // Refresh the page to show updated data
     }
   };
 
+  const handleAddSave = async () => {
+    if (newCompanyName) {
+      await addCompany(user, newCompanyName);
+      setIsAddDialogOpen(false);
+      setNewCompanyName('');
+      router.refresh();
+    }
+  };
+
   return (
     <main className="flex min-h-screen flex-col justify-start p-24">
-      <h1 className="mb-8 text-4xl font-bold">Companies</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-4xl font-bold">Companies</h1>
+        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+          <DialogTrigger asChild>
+            <Button>Add New</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Add New Company</DialogTitle>
+              <DialogDescription>
+                Enter the new company name below. Click save when you&apos;re done.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="new-name" className="text-right">
+                  Name
+                </Label>
+                <Input
+                  id="new-name"
+                  value={newCompanyName}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewCompanyName(e.target.value)}
+                  className="col-span-3"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>Cancel</Button>
+              <Button type="submit" onClick={handleAddSave}>Save</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -65,14 +111,14 @@ export function Companies({ companies }: CompaniesPageProps) {
           {companies.map((company) => (
             <TableRow key={company.id}>
               <TableCell>
-                <Dialog open={isDialogOpen && editingCompanyId === company.id} onOpenChange={setIsDialogOpen}>
+                <Dialog open={isEditDialogOpen && editingCompanyId === company.id} onOpenChange={setIsEditDialogOpen}>
                   <DialogTrigger asChild>
                     <Button
                       variant="link"
                       onClick={() => {
                         setEditingCompanyId(company.id);
                         setEditingCompanyName(company.name);
-                        setIsDialogOpen(true);
+                        setIsEditDialogOpen(true);
                       }}
                     >
                       {company.name}
@@ -99,7 +145,8 @@ export function Companies({ companies }: CompaniesPageProps) {
                       </div>
                     </div>
                     <DialogFooter>
-                      <Button type="submit" onClick={handleSave}>Save changes</Button>
+                      <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
+                      <Button type="submit" onClick={handleEditSave}>Save changes</Button>
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>

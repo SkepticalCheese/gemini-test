@@ -9,7 +9,7 @@ export default async function Home() {
   // If session exists, show a welcome message and logout button
   return (
     <main className="flex min-h-screen flex-col justify-start p-24">
-      <h1 className="mb-8 text-4xl font-bold">Welcome, {user.name || session.user.name}!</h1>
+      <h1 className="mb-8 text-4xl font-bold">Welcome, {user?.name || session?.user.name}!</h1>
       <p>
         <a href="/auth/logout">
           <Button>Log out</Button>
