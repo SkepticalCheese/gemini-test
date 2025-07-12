@@ -1,10 +1,9 @@
 import { auth0 } from '@/lib/auth0';
-import { getUser } from '@/lib/user';
-import prisma from '@/lib/prisma';
+import { getUser } from '@/lib/server/user';
+import { getContacts} from '@/lib/server/contact';
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -23,16 +22,7 @@ export default async function Contacts() {
     );
   }
 
-  const contacts = await prisma.contact.findMany({
-    where: {
-      company: {
-        tenant_id: user.tenant_id,
-      },
-    },
-    include: {
-      company: true,
-    },
-  });
+  const contacts = await getContacts (user);
 
   return (
     <main className="flex min-h-screen flex-col justify-start p-24">

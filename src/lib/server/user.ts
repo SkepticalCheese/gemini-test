@@ -1,4 +1,6 @@
-import prisma from '@/lib/prisma';
+'use server'
+
+import prisma from '@/lib/server/prisma';
 import { SessionData } from '@auth0/nextjs-auth0/types';
 
 export async function getUser(session: SessionData | null) {
@@ -18,3 +20,5 @@ export async function getUser(session: SessionData | null) {
 
   return user;
 }
+
+export type UserType = Awaited<ReturnType<typeof getUser>>;

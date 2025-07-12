@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { auth0 } from '@/lib/auth0'
-import { getUser } from "@/lib/user";
+import { getUser } from "@/lib/server/user";
 
 export default async function Home() {
   const session = await auth0.getSession();

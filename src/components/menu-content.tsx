@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { NavigationLink } from '@/components/navigation-link'
 import { LINKS } from '@/lib/constants'
 import { auth0 } from '@/lib/auth0'
-import { getUser } from '@/lib/user';
+import { getUser } from '@/lib/server/user';
 
 export const MenuContent = async() => {
   
