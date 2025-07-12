@@ -6,13 +6,7 @@ export const LINKS = [
     href: '/',
     label: 'Home',
     icon: <HomeIcon size={16} />
-  },
-  {
-    href: '/welcome',
-    label: 'Welcome',
-    icon: <UserIcon size={16} />
-  },
-  {
+  },  {
     href: '/contacts',
     label: 'Contacts',
     icon: <ContactIcon size={16} />
