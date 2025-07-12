@@ -1,5 +1,5 @@
 
-import { HomeIcon, LogOutIcon, ContactIcon } from 'lucide-react'
+import { HomeIcon, LogOutIcon, ContactIcon, BuildingIcon } from 'lucide-react'
 
 export const LINKS = [
   {
@@ -10,6 +10,11 @@ export const LINKS = [
     href: '/contacts',
     label: 'Contacts',
     icon: <ContactIcon size={16} />
+  },
+  {
+    href: '/companies',
+    label: 'Companies',
+    icon: <BuildingIcon size={16} />
   },
  {
     href: '/auth/logout',

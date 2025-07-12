@@ -12,7 +12,7 @@ datasource db {
 }
 
 model Tenant {
-  id        Int        @default(autoincrement()) @id
+  id         Int       @default(autoincrement()) @id
   name       String    @db.VarChar(350)
   created_at DateTime  @default(now())
 
