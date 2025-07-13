@@ -22,7 +22,14 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
+import { Trash2 } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { UserType } from '@/lib/server/user';
 
 interface Contact {
@@ -258,17 +265,27 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
               <TableCell>{contact.phone}</TableCell>
               <TableCell>
                 <Dialog open={isDeleteDialogOpen && deletingContact?.id === contact.id} onOpenChange={setIsDeleteDialogOpen}>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="outline"
-                      onClick={() => {
-                        setDeletingContact(contact);
-                        setIsDeleteDialogOpen(true);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  </DialogTrigger>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <DialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => {
+                              setDeletingContact(contact);
+                              setIsDeleteDialogOpen(true);
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </DialogTrigger>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Deletes the contact</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                   <DialogContent>
                     <DialogHeader>
                       <DialogTitle>Are you sure you want to delete this contact?</DialogTitle>
