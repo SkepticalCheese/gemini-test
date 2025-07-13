@@ -41,3 +41,9 @@ export async function addContact(user: UserType, name: string, email: string, ph
     },
   });
 }
+
+export async function deleteContact(id: number) {
+  await prisma.contact.delete({
+    where: { id },
+  });
+}

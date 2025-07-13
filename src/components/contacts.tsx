@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { updateContact, addContact } from '@/lib/server/contact';
+import { updateContact, addContact, deleteContact } from '@/lib/server/contact';
 import {
   Table,
   TableBody,
@@ -56,6 +56,9 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
   const [newContact, setNewContact] = useState({ name: '', email: '', phone: '', company_id: 0 });
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
+  const [deletingContact, setDeletingContact] = useState<Contact | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
   const handleEditSave = async () => {
     if (editingContact) {
       await updateContact(editingContact.id, editingContact.name, editingContact.email, editingContact.phone, editingContact.company_id);
@@ -70,6 +73,15 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
       await addContact(user, newContact.name, newContact.email, newContact.phone, newContact.company_id);
       setIsAddDialogOpen(false);
       setNewContact({ name: '', email: '', phone: '', company_id: 0 });
+      router.refresh();
+    }
+  };
+
+  const handleDelete = async () => {
+    if (deletingContact) {
+      await deleteContact(deletingContact.id);
+      setIsDeleteDialogOpen(false);
+      setDeletingContact(null);
       router.refresh();
     }
   };
@@ -156,6 +168,7 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
             <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Phone</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -243,6 +256,33 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
               </TableCell>
               <TableCell>{contact.email}</TableCell>
               <TableCell>{contact.phone}</TableCell>
+              <TableCell>
+                <Dialog open={isDeleteDialogOpen && deletingContact?.id === contact.id} onOpenChange={setIsDeleteDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setDeletingContact(contact);
+                        setIsDeleteDialogOpen(true);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Are you sure you want to delete this contact?</DialogTitle>
+                      <DialogDescription>
+                        This action cannot be undone. This will permanently delete the contact.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                      <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
+                      <Button variant="destructive" onClick={handleDelete}>Delete</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
