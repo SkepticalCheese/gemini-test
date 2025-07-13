@@ -52,3 +52,9 @@ export async function addCompany(user: UserType, name: string) {
     },
   });
 }
+
+export async function deleteCompany(id: number) {
+  await prisma.company.delete({
+    where: { id: id },
+  });
+}
