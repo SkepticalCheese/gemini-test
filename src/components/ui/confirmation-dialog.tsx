@@ -1,54 +1,31 @@
-
 'use client';
 
 import {
-  Dialog,
-  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { ReactNode, useState } from "react";
 
-interface ConfirmationDialogProps {
-  trigger: ReactNode;
+interface ConfirmationDialogContentProps {
   title: string;
   description: string;
   onConfirm: () => void;
-  onCancel?: () => void;
+  onCancel: () => void;
 }
 
-export function ConfirmationDialog({ trigger, title, description, onConfirm, onCancel }: ConfirmationDialogProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleConfirm = () => {
-    onConfirm();
-    setIsOpen(false);
-  };
-
-  const handleCancel = () => {
-    if (onCancel) {
-      onCancel();
-    }
-    setIsOpen(false);
-  };
-
+export function ConfirmationDialogContent({ title, description, onConfirm, onCancel }: ConfirmationDialogContentProps) {
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <Button variant="outline" onClick={handleCancel}>Cancel</Button>
-          <Button variant="destructive" onClick={handleConfirm}>Confirm</Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <>
+      <DialogHeader>
+        <DialogTitle>{title}</DialogTitle>
+        <DialogDescription>{description}</DialogDescription>
+      </DialogHeader>
+      <DialogFooter>
+        <Button variant="outline" onClick={onCancel}>Cancel</Button>
+        <Button variant="destructive" onClick={onConfirm}>Confirm</Button>
+      </DialogFooter>
+    </>
   );
 }

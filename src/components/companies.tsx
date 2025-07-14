@@ -31,7 +31,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { UserType } from '@/lib/server/user';
-import { ConfirmationDialogContent } from './ui/confirmation-dialog-content';
+import { ConfirmationDialogContent } from './ui/confirmation-dialog';
 
 interface CompaniesPageProps {
   companies: {
