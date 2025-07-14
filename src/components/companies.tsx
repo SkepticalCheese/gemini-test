@@ -121,6 +121,7 @@ export function Companies({ companies, user }: CompaniesPageProps) {
             <TableHead>Name</TableHead>
             <TableHead>Created At</TableHead>
             <TableHead>Contacts</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -168,7 +169,7 @@ export function Companies({ companies, user }: CompaniesPageProps) {
                 </Dialog>
               </TableCell>
               <TableCell>{new Date(company.createdAt).toLocaleString('en-US', { month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</TableCell>
-              <TableCell>{company.contactCount}</TableCell>
+              <TableCell className="text-right">{company.contactCount}</TableCell>
               <TableCell>
                 <Dialog open={deletingCompany?.id === company.id} onOpenChange={() => setDeletingCompany(null)}>
                   <TooltipProvider>
