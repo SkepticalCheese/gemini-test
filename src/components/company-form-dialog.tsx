@@ -26,23 +26,31 @@ interface CompanyFormDialogProps {
 export function CompanyFormDialog({ isOpen, onOpenChange, company, user }: CompanyFormDialogProps) {
   const router = useRouter();
   const [companyName, setCompanyName] = useState(company?.name || '');
+  const [isTouched, setIsTouched] = useState(false);
 
   useEffect(() => {
     setCompanyName(company?.name || '');
-  }, [company]);
+    setIsTouched(false);
+  }, [company, isOpen]);
 
   const handleSave = async () => {
+    const trimmedName = companyName.trim();
+    if (!trimmedName) return;
+
     if (company) {
       // Editing existing company
-      await updateCompany(company.id, companyName);
+      await updateCompany(company.id, trimmedName);
     } else {
       // Adding new company
-      await addCompany(user, companyName);
+      await addCompany(user, trimmedName);
     }
     onOpenChange(false);
     setCompanyName('');
     router.refresh();
   };
+
+  const isSaveDisabled = !companyName.trim();
+  const showError = isTouched && isSaveDisabled;
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -61,14 +69,22 @@ export function CompanyFormDialog({ isOpen, onOpenChange, company, user }: Compa
             <Input
               id="name"
               value={companyName}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCompanyName(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setCompanyName(e.target.value);
+                setIsTouched(true);
+              }}
               className="col-span-3"
             />
           </div>
+          {showError && (
+            <p className="text-sm text-red-500 col-start-2 col-span-3">
+              Company name cannot be empty.
+            </p>
+          )}
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button type="submit" onClick={handleSave}>Save</Button>
+          <Button type="submit" onClick={handleSave} disabled={isSaveDisabled}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

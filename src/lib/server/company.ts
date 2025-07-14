@@ -38,6 +38,9 @@ export async function getCompanyList(user: UserType) {
 }
 
 export async function updateCompany(id: number, name: string) {
+  if (!name || !name.trim()) {
+    throw new Error('Company name cannot be empty');
+  }
   await prisma.company.update({
     where: { id: id },
     data: { name },
@@ -45,6 +48,9 @@ export async function updateCompany(id: number, name: string) {
 }
 
 export async function addCompany(user: UserType, name: string) {
+  if (!name || !name.trim()) {
+    throw new Error('Company name cannot be empty');
+  }
   await prisma.company.create({
     data: {
       name,
