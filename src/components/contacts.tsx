@@ -23,7 +23,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button";
-import { Trash2 } from 'lucide-react';
+import { Trash2, Pencil } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -179,19 +179,30 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
           {contacts.map((contact) => (
             <TableRow key={contact.id}>
               <TableCell>{contact.company.name}</TableCell>
-              <TableCell>
+              <TableCell>{contact.name}</TableCell>
+              <TableCell>{contact.email}</TableCell>
+              <TableCell>{contact.phone}</TableCell>
+              <TableCell className="flex items-center space-x-2">
                 <Dialog open={isEditDialogOpen && editingContact?.id === contact.id} onOpenChange={setIsEditDialogOpen}>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="link"
-                      onClick={() => {
-                        setEditingContact(contact);
-                        setIsEditDialogOpen(true);
-                      }}
-                    >
-                      {contact.name}
-                    </Button>
-                  </DialogTrigger>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => {
+                            setEditingContact(contact);
+                            setIsEditDialogOpen(true);
+                          }}
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Edit contact</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                   <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
                       <DialogTitle>Edit Contact</DialogTitle>
@@ -257,10 +268,6 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
-              </TableCell>
-              <TableCell>{contact.email}</TableCell>
-              <TableCell>{contact.phone}</TableCell>
-              <TableCell>
                 <Dialog open={deletingContact?.id === contact.id} onOpenChange={() => setDeletingContact(null)}>
                   <TooltipProvider>
                     <Tooltip>

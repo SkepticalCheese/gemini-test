@@ -23,7 +23,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Trash2 } from 'lucide-react';
+import { Trash2, Pencil } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -128,19 +128,32 @@ export function Companies({ companies, user }: CompaniesPageProps) {
           {companies.map((company) => (
             <TableRow key={company.id}>
               <TableCell>
+                {company.name}
+              </TableCell>
+              <TableCell>{new Date(company.createdAt).toLocaleString('en-US', { month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</TableCell>
+              <TableCell className="text-right">{company.contactCount}</TableCell>
+              <TableCell className="flex items-center space-x-2">
                 <Dialog open={isEditDialogOpen && editingCompanyId === company.id} onOpenChange={setIsEditDialogOpen}>
-                  <DialogTrigger asChild>
-                    <Button
-                      variant="link"
-                      onClick={() => {
-                        setEditingCompanyId(company.id);
-                        setEditingCompanyName(company.name);
-                        setIsEditDialogOpen(true);
-                      }}
-                    >
-                      {company.name}
-                    </Button>
-                  </DialogTrigger>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => {
+                            setEditingCompanyId(company.id);
+                            setEditingCompanyName(company.name);
+                            setIsEditDialogOpen(true);
+                          }}
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Edit company</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                   <DialogContent className="sm:max-w-[425px]">
                     <DialogHeader>
                       <DialogTitle>Edit Company Name</DialogTitle>
@@ -167,10 +180,6 @@ export function Companies({ companies, user }: CompaniesPageProps) {
                     </DialogFooter>
                   </DialogContent>
                 </Dialog>
-              </TableCell>
-              <TableCell>{new Date(company.createdAt).toLocaleString('en-US', { month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</TableCell>
-              <TableCell className="text-right">{company.contactCount}</TableCell>
-              <TableCell>
                 <Dialog open={deletingCompany?.id === company.id} onOpenChange={() => setDeletingCompany(null)}>
                   <TooltipProvider>
                     <Tooltip>
