@@ -24,7 +24,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { UserType } from '@/lib/server/user';
-import { ConfirmationDialogContent } from './ui/confirmation-dialog-content';
+import { ConfirmationDialog } from './ui/confirmation-dialog';
 import { CompanyFormDialog } from './company-form-dialog';
 
 interface CompaniesPageProps {
@@ -130,7 +130,7 @@ export function Companies({ companies, user }: CompaniesPageProps) {
                     </Tooltip>
                   </TooltipProvider>
                   <DialogContent>
-                    <ConfirmationDialogContent
+                    <ConfirmationDialog
                       title="Are you sure you want to delete this company?"
                       description="This action cannot be undone. This will permanently delete the company."
                       onConfirm={() => handleDelete(company.id)}

@@ -8,14 +8,14 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 
-interface ConfirmationDialogContentProps {
+interface ConfirmationDialogProps {
   title: string;
   description: string;
   onConfirm: () => void;
   onCancel: () => void;
 }
 
-export function ConfirmationDialogContent({ title, description, onConfirm, onCancel }: ConfirmationDialogContentProps) {
+export function ConfirmationDialog({ title, description, onConfirm, onCancel }: ConfirmationDialogProps) {
   return (
     <>
       <DialogHeader>

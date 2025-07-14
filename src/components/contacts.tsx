@@ -24,7 +24,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { UserType } from '@/lib/server/user';
-import { ConfirmationDialogContent } from './ui/confirmation-dialog-content';
+import { ConfirmationDialog } from './ui/confirmation-dialog';
 import { ContactFormDialog } from './contact-form-dialog';
 
 interface Contact {
@@ -124,7 +124,7 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
                     </Tooltip>
                   </TooltipProvider>
                   <DialogContent>
-                    <ConfirmationDialogContent
+                    <ConfirmationDialog
                       title="Are you sure you want to delete this contact?"
                       description="This action cannot be undone. This will permanently delete the contact."
                       onConfirm={() => handleDelete(contact.id)}
