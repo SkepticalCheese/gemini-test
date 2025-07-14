@@ -31,6 +31,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { UserType } from '@/lib/server/user';
+import { ConfirmationDialogContent } from './ui/confirmation-dialog-content';
 
 interface CompaniesPageProps {
   companies: {
@@ -52,8 +53,7 @@ export function Companies({ companies, user }: CompaniesPageProps) {
   const [newCompanyName, setNewCompanyName] = useState<string>('');
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
-  const [deletingCompany, setDeletingCompany] = useState<{ id: number; name: string } | null>(null);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [deletingCompany, setDeletingCompany] = useState<{ id: number; name: string, contactCount: number } | null>(null);
 
   const handleEditSave = async () => {
     if (editingCompanyId && editingCompanyName) {
@@ -74,13 +74,10 @@ export function Companies({ companies, user }: CompaniesPageProps) {
     }
   };
 
-  const handleDelete = async () => {
-    if (deletingCompany) {
-      await deleteCompany(deletingCompany.id);
-      setIsDeleteDialogOpen(false);
-      setDeletingCompany(null);
-      router.refresh();
-    }
+  const handleDelete = async (companyId: number) => {
+    await deleteCompany(companyId);
+    setDeletingCompany(null);
+    router.refresh();
   };
 
   return (
@@ -173,23 +170,18 @@ export function Companies({ companies, user }: CompaniesPageProps) {
               <TableCell>{new Date(company.createdAt).toLocaleString('en-US', { month: 'short', day: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</TableCell>
               <TableCell>{company.contactCount}</TableCell>
               <TableCell>
-                <Dialog open={isDeleteDialogOpen && deletingCompany?.id === company.id} onOpenChange={setIsDeleteDialogOpen}>
+                <Dialog open={deletingCompany?.id === company.id} onOpenChange={() => setDeletingCompany(null)}>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => {
-                              setDeletingCompany(company);
-                              setIsDeleteDialogOpen(true);
-                            }}
-                            disabled={company.contactCount > 0}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </DialogTrigger>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          disabled={company.contactCount > 0}
+                          onClick={() => setDeletingCompany(company)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
                       </TooltipTrigger>
                       <TooltipContent>
                         {company.contactCount > 0 ? (
@@ -201,16 +193,12 @@ export function Companies({ companies, user }: CompaniesPageProps) {
                     </Tooltip>
                   </TooltipProvider>
                   <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Are you sure you want to delete this company?</DialogTitle>
-                      <DialogDescription>
-                        This action cannot be undone. This will permanently delete the company.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                      <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
-                      <Button variant="destructive" onClick={handleDelete}>Delete</Button>
-                    </DialogFooter>
+                    <ConfirmationDialogContent
+                      title="Are you sure you want to delete this company?"
+                      description="This action cannot be undone. This will permanently delete the company."
+                      onConfirm={() => handleDelete(company.id)}
+                      onCancel={() => setDeletingCompany(null)}
+                    />
                   </DialogContent>
                 </Dialog>
               </TableCell>
@@ -221,3 +209,4 @@ export function Companies({ companies, user }: CompaniesPageProps) {
     </main>
   );
 }
+

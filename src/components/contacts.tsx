@@ -31,6 +31,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { UserType } from '@/lib/server/user';
+import { ConfirmationDialogContent } from './ui/confirmation-dialog-content';
 
 interface Contact {
     id: number;
@@ -64,7 +65,6 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
   const [deletingContact, setDeletingContact] = useState<Contact | null>(null);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const handleEditSave = async () => {
     if (editingContact) {
@@ -84,13 +84,10 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
     }
   };
 
-  const handleDelete = async () => {
-    if (deletingContact) {
-      await deleteContact(deletingContact.id);
-      setIsDeleteDialogOpen(false);
-      setDeletingContact(null);
-      router.refresh();
-    }
+  const handleDelete = async (contactId: number) => {
+    await deleteContact(contactId);
+    setDeletingContact(null);
+    router.refresh();
   };
 
   return (
@@ -264,22 +261,17 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
               <TableCell>{contact.email}</TableCell>
               <TableCell>{contact.phone}</TableCell>
               <TableCell>
-                <Dialog open={isDeleteDialogOpen && deletingContact?.id === contact.id} onOpenChange={setIsDeleteDialogOpen}>
+                <Dialog open={deletingContact?.id === contact.id} onOpenChange={() => setDeletingContact(null)}>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <DialogTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => {
-                              setDeletingContact(contact);
-                              setIsDeleteDialogOpen(true);
-                            }}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </DialogTrigger>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setDeletingContact(contact)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>Deletes the contact</p>
@@ -287,16 +279,12 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
                     </Tooltip>
                   </TooltipProvider>
                   <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Are you sure you want to delete this contact?</DialogTitle>
-                      <DialogDescription>
-                        This action cannot be undone. This will permanently delete the contact.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                      <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
-                      <Button variant="destructive" onClick={handleDelete}>Delete</Button>
-                    </DialogFooter>
+                    <ConfirmationDialogContent
+                      title="Are you sure you want to delete this contact?"
+                      description="This action cannot be undone. This will permanently delete the contact."
+                      onConfirm={() => handleDelete(contact.id)}
+                      onCancel={() => setDeletingContact(null)}
+                    />
                   </DialogContent>
                 </Dialog>
               </TableCell>
@@ -307,3 +295,4 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
     </main>
   );
 }
+

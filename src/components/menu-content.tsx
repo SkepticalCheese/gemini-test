@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 import { NavigationLink } from '@/components/navigation-link'
-import { LINKS } from '@/lib/constants'
+import { LINKS } from '@/lib/menu-constants'
 import { auth0 } from '@/lib/auth0'
 import { getUser } from '@/lib/server/user';
 
