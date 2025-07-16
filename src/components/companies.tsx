@@ -99,7 +99,7 @@ export function Companies({ companies, user }: CompaniesPageProps) {
                         size="icon"
                         onClick={() => handleEditCompany(company)}
                       >
-                        <Pencil className="h-4 w-4" />
+                        <Pencil className="h-4 w-4 text-blue-500" />
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -118,7 +118,7 @@ export function Companies({ companies, user }: CompaniesPageProps) {
                             disabled={company.contactCount > 0}
                             onClick={() => setDeletingCompany(company)}
                           >
-                            <Trash2 className="h-4 w-4" />
+                            <Trash2 className={`h-4 w-4 ${company.contactCount === 0 ? 'text-red-500' : ''}`} />
                           </Button>
                         </span>
                       </TooltipTrigger>
@@ -148,4 +148,3 @@ export function Companies({ companies, user }: CompaniesPageProps) {
     </main>
   );
 }
-

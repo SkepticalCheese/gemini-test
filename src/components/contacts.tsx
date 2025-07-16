@@ -99,13 +99,22 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
               <TableCell>{contact.email}</TableCell>
               <TableCell>{contact.phone}</TableCell>
               <TableCell className="flex items-center space-x-2">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleOpenContactFormDialog(contact)}
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleOpenContactFormDialog(contact)}
+                      >
+                        <Pencil className="h-4 w-4 text-blue-500" />
+                      </Button>
+                    </TooltipTrigger> 
+                    <TooltipContent>
+                      <p>Edit contact</p>
+                    </TooltipContent>
+                  </Tooltip> 
+                </TooltipProvider>  
                 <Dialog open={deletingContact?.id === contact.id} onOpenChange={() => setDeletingContact(null)}>
                   <TooltipProvider>
                     <Tooltip>
@@ -115,7 +124,7 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
                           size="icon"
                           onClick={() => setDeletingContact(contact)}
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-4 w-4 text-red-500" />
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
@@ -140,4 +149,3 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
     </main>
   );
 }
-
