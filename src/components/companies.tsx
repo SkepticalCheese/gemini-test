@@ -99,7 +99,7 @@ export function Companies({ companies, user }: CompaniesPageProps) {
                     <TooltipTrigger asChild>
                       <Button
                         onClick={() => handleEditCompany(company)}
-                        className='bg-blue-700'
+                        variant='edit'
                       >
                         <Pencil/>
                         Edit
@@ -117,7 +117,7 @@ export function Companies({ companies, user }: CompaniesPageProps) {
                         <span>
                           <Button
                             disabled={company.contactCount > 0}
-                            className={`${company.contactCount === 0 ? 'bg-red-600' : ''}`} 
+                            variant='destructive'
                             onClick={() => setDeletingCompany(company)}
                           >
                             <Trash2/>

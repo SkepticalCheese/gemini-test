@@ -106,7 +106,7 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
-                        className='bg-blue-700'
+                        variant='edit'
                         onClick={() => handleOpenContactFormDialog(contact)}
                       >
                         <Pencil/>
@@ -123,7 +123,7 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
-                          className= 'bg-red-600'
+                          variant= 'destructive'
                           onClick={() => setDeletingContact(contact)}
                         >
                           <Trash2/>
