@@ -82,7 +82,7 @@ export function Companies({ companies, user }: CompaniesPageProps) {
             <TableHead>Name</TableHead>
             <TableHead>Created At</TableHead>
             <TableHead>Contacts</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -98,11 +98,11 @@ export function Companies({ companies, user }: CompaniesPageProps) {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
-                        variant="ghost"
-                        size="icon"
                         onClick={() => handleEditCompany(company)}
+                        className='bg-blue-700'
                       >
-                        <Pencil className="h-4 w-4 text-blue-500" />
+                        <Pencil/>
+                        Edit
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -116,12 +116,12 @@ export function Companies({ companies, user }: CompaniesPageProps) {
                       <TooltipTrigger asChild>
                         <span>
                           <Button
-                            variant="ghost"
-                            size="icon"
                             disabled={company.contactCount > 0}
+                            className={`${company.contactCount === 0 ? 'bg-red-600' : ''}`} 
                             onClick={() => setDeletingCompany(company)}
                           >
-                            <Trash2 className={`h-4 w-4 ${company.contactCount === 0 ? 'text-red-500' : ''}`} />
+                            <Trash2/>
+                            Delete
                           </Button>
                         </span>
                       </TooltipTrigger>
