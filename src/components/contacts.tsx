@@ -16,7 +16,7 @@ import {
   DialogContent,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button";
-import { Trash2, Pencil } from 'lucide-react';
+import { Trash2, Pencil, Plus } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
@@ -72,7 +72,10 @@ export function Contacts({ contacts, companies, user }: ContactsPageProps) {
     <main className="flex min-h-screen flex-col justify-start p-24">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl font-bold">Contacts</h1>
-        <Button onClick={() => handleOpenContactFormDialog()}>Add New</Button>
+        <Button onClick={() => handleOpenContactFormDialog()}>
+          <Plus className="mr-2 h-4 w-4" />
+          Add Contact
+        </Button>
         <ContactFormDialog
           isOpen={isContactFormDialogOpen}
           onOpenChange={setIsContactFormDialogOpen}
