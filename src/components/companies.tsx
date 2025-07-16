@@ -111,14 +111,16 @@ export function Companies({ companies, user }: CompaniesPageProps) {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          disabled={company.contactCount > 0}
-                          onClick={() => setDeletingCompany(company)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                        <span>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            disabled={company.contactCount > 0}
+                            onClick={() => setDeletingCompany(company)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </span>
                       </TooltipTrigger>
                       <TooltipContent>
                         {company.contactCount > 0 ? (
