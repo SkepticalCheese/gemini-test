@@ -1,5 +1,4 @@
-// lib/auth0.js
-'use server'
+// 'use server' -> Do not use here, no matter how much AI suggests it as it causes errors on Next
 import { Auth0Client } from "@auth0/nextjs-auth0/server";
 
 // Initialize the Auth0 client 
