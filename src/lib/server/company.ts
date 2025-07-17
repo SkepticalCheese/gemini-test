@@ -1,9 +1,7 @@
 'use server'
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/lib/server/prisma';
 import { UserType } from '@/lib/server/user';
-
-const prisma = new PrismaClient();
 
 export async function getCompanies(user: UserType) {
   const companies = await prisma.company.findMany({
