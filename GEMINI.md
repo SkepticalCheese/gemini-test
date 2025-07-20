@@ -9,6 +9,7 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Shadcn UI, 
 - Prefer iteration and modularization over code duplication.
 - Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError).
 - Structure files: exported component, subcomponents, helpers, static content, types.
+- Follow Next.js docs for Data Fetching, Rendering, and Routing.
 
 ## Naming Conventions
 
@@ -44,4 +45,7 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Shadcn UI, 
 - Use 'nuqs' for URL search parameter state management.
 - Limit 'use client':
 
-Follow Next.js docs for Data Fetching, Rendering, and Routing.
+## Git Hub Workflow
+
+- When creating code for a GitHub issue, create a branch off the "main" branch for the code changes. Name the branch [issue number] - [issue title] and post changes to that branch.
+- Set the issue to "In Progress" status
