@@ -69,7 +69,13 @@ const validate = (formData: FormState) => {
   } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
     newErrors.email = 'Email address is invalid.';
   }
-  if (!formData.phone.trim()) newErrors.phone = 'Phone number cannot be empty.';
+  if (!formData.phone.trim()) {
+    newErrors.phone = 'Phone number cannot be empty.';
+  } else if (!/^[+\d()-\s]+$/.test(formData.phone)) {
+    newErrors.phone = 'Phone number contains invalid characters.';
+  } else if (formData.phone.replace(/\D/g, '').length < 7) {
+    newErrors.phone = 'Phone number must contain at least 7 digits.';
+  }
   if (formData.company_id === 0) newErrors.company_id = 'A company must be selected.';
   return newErrors;
 };
