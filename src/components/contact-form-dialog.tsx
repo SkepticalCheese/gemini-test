@@ -54,8 +54,15 @@ interface FormState {
   company_id: number;
 }
 
+interface FormErrors {
+  name?: string;
+  email?: string;
+  phone?: string;
+  company_id?: string;
+}
+
 const validate = (formData: FormState) => {
-  const newErrors: Partial<FormState> = {};
+  const newErrors: FormErrors = {};
   if (!formData.name.trim()) newErrors.name = 'Contact name cannot be empty.';
   if (!formData.email.trim()) {
     newErrors.email = 'Email address cannot be empty.';
@@ -70,7 +77,7 @@ const validate = (formData: FormState) => {
 export function ContactFormDialog({ isOpen, onOpenChange, contact, companies, user }: ContactFormDialogProps) {
   const router = useRouter();
   const [formData, setFormData] = useState(getInitialFormState(contact));
-  const [errors, setErrors] = useState<Partial<FormState>>({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Partial<Record<keyof FormState, boolean>>>({});
 
   useEffect(() => {
@@ -130,7 +137,7 @@ export function ContactFormDialog({ isOpen, onOpenChange, contact, companies, us
               <Input
                 id="name"
                 value={formData.name}
-                onChange={e => handleFieldChange('name', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFieldChange('name', e.target.value)}
                 onBlur={() => handleBlur('name')}
               />
               {touched.name && errors.name && <p className="pt-1 text-sm text-red-500">{errors.name}</p>}
@@ -144,7 +151,7 @@ export function ContactFormDialog({ isOpen, onOpenChange, contact, companies, us
               <Input
                 id="email"
                 value={formData.email}
-                onChange={e => handleFieldChange('email', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFieldChange('email', e.target.value)}
                 onBlur={() => handleBlur('email')}
               />
               {touched.email && errors.email && <p className="pt-1 text-sm text-red-500">{errors.email}</p>}
@@ -158,7 +165,7 @@ export function ContactFormDialog({ isOpen, onOpenChange, contact, companies, us
               <Input
                 id="phone"
                 value={formData.phone}
-                onChange={e => handleFieldChange('phone', e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFieldChange('phone', e.target.value)}
                 onBlur={() => handleBlur('phone')}
               />
               {touched.phone && errors.phone && <p className="pt-1 text-sm text-red-500">{errors.phone}</p>}
