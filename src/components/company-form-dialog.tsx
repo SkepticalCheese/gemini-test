@@ -66,21 +66,22 @@ export function CompanyFormDialog({ isOpen, onOpenChange, company, user }: Compa
             <Label htmlFor="name" className="text-right">
               Name
             </Label>
-            <Input
-              id="name"
-              value={companyName}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setCompanyName(e.target.value);
-                setIsTouched(true);
-              }}
-              className="col-span-3"
-            />
+            <div className="col-span-3">
+              <Input
+                id="name"
+                value={companyName}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setCompanyName(e.target.value);
+                  setIsTouched(true);
+                }}
+              />
+              {showError && (
+                <p className="pt-1 text-sm text-red-500">
+                  Company name cannot be empty.
+                </p>
+              )}
+            </div>
           </div>
-          {showError && (
-            <p className="text-sm text-red-500 col-start-2 col-span-3">
-              Company name cannot be empty.
-            </p>
-          )}
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
