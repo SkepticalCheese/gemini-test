@@ -40,36 +40,84 @@ interface ContactFormDialogProps {
   user: UserType;
 }
 
+const getInitialFormState = (contact?: Contact) => ({
+  name: contact?.name || '',
+  email: contact?.email || '',
+  phone: contact?.phone || '',
+  company_id: contact?.company_id || 0,
+});
+
+interface FormState {
+  name: string;
+  email: string;
+  phone: string;
+  company_id: number;
+}
+
+interface FormErrors {
+  name?: string;
+  email?: string;
+  phone?: string;
+  company_id?: string;
+}
+
+const validate = (formData: FormState) => {
+  const newErrors: FormErrors = {};
+  if (!formData.name.trim()) newErrors.name = 'Contact name cannot be empty.';
+  if (!formData.email.trim()) {
+    newErrors.email = 'Email address cannot be empty.';
+  } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    newErrors.email = 'Email address is invalid.';
+  }
+  if (!formData.phone.trim()) newErrors.phone = 'Phone number cannot be empty.';
+  if (formData.company_id === 0) newErrors.company_id = 'A company must be selected.';
+  return newErrors;
+};
+
 export function ContactFormDialog({ isOpen, onOpenChange, contact, companies, user }: ContactFormDialogProps) {
   const router = useRouter();
-  const [contactData, setContactData] = useState({
-    name: contact?.name || '',
-    email: contact?.email || '',
-    phone: contact?.phone || '',
-    company_id: contact?.company_id || 0,
-  });
+  const [formData, setFormData] = useState(getInitialFormState(contact));
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [touched, setTouched] = useState<Partial<Record<keyof FormState, boolean>>>({});
 
   useEffect(() => {
-    setContactData({
-      name: contact?.name || '',
-      email: contact?.email || '',
-      phone: contact?.phone || '',
-      company_id: contact?.company_id || 0,
-    });
-  }, [contact]);
+    setFormData(getInitialFormState(contact));
+    setErrors({});
+    setTouched({});
+  }, [contact, isOpen]);
+
+  const handleFieldChange = (field: keyof FormState, value: string | number) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (touched[field]) {
+      const newErrors = validate({ ...formData, [field]: value });
+      setErrors(newErrors);
+    }
+  };
+
+  const handleBlur = (field: keyof FormState) => {
+    setTouched(prev => ({ ...prev, [field]: true }));
+    const newErrors = validate(formData);
+    setErrors(newErrors);
+  };
 
   const handleSave = async () => {
+    const newErrors = validate(formData);
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setTouched({ name: true, email: true, phone: true, company_id: true });
+      return;
+    }
+
     if (contact) {
-      // Editing existing contact
-      await updateContact(contact.id, contactData.name, contactData.email, contactData.phone, contactData.company_id);
+      await updateContact(contact.id, formData.name, formData.email, formData.phone, formData.company_id);
     } else {
-      // Adding new contact
-      await addContact(user, contactData.name, contactData.email, contactData.phone, contactData.company_id);
+      await addContact(user, formData.name, formData.email, formData.phone, formData.company_id);
     }
     onOpenChange(false);
-    setContactData({ name: '', email: '', phone: '', company_id: 0 });
     router.refresh();
   };
+
+  const isSaveDisabled = Object.keys(validate(formData)).length > 0;
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -85,57 +133,70 @@ export function ContactFormDialog({ isOpen, onOpenChange, contact, companies, us
             <Label htmlFor="name" className="text-right">
               Name
             </Label>
-            <Input
-              id="name"
-              value={contactData.name}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContactData({ ...contactData, name: e.target.value })}
-              className="col-span-3"
-            />
+            <div className="col-span-3">
+              <Input
+                id="name"
+                value={formData.name}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFieldChange('name', e.target.value)}
+                onBlur={() => handleBlur('name')}
+              />
+              {touched.name && errors.name && <p className="pt-1 text-sm text-red-500">{errors.name}</p>}
+            </div>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="email" className="text-right">
               Email
             </Label>
-            <Input
-              id="email"
-              value={contactData.email}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContactData({ ...contactData, email: e.target.value })}
-              className="col-span-3"
-            />
+            <div className="col-span-3">
+              <Input
+                id="email"
+                value={formData.email}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFieldChange('email', e.target.value)}
+                onBlur={() => handleBlur('email')}
+              />
+              {touched.email && errors.email && <p className="pt-1 text-sm text-red-500">{errors.email}</p>}
+            </div>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="phone" className="text-right">
               Phone
             </Label>
-            <Input
-              id="phone"
-              value={contactData.phone}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContactData({ ...contactData, phone: e.target.value })}
-              className="col-span-3"
-            />
+            <div className="col-span-3">
+              <Input
+                id="phone"
+                value={formData.phone}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleFieldChange('phone', e.target.value)}
+                onBlur={() => handleBlur('phone')}
+              />
+              {touched.phone && errors.phone && <p className="pt-1 text-sm text-red-500">{errors.phone}</p>}
+            </div>
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="company" className="text-right">
               Company
             </Label>
-            <select
-              id="company"
-              value={contactData.company_id}
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setContactData({ ...contactData, company_id: parseInt(e.target.value) })}
-              className="col-span-3"
-            >
-              <option value={0}>Select a company</option>
-              {companies.map((company) => (
-                <option key={company.id} value={company.id}>
-                  {company.name}
-                </option>
-              ))}
-            </select>
+            <div className="col-span-3">
+              <select
+                id="company"
+                value={formData.company_id}
+                onChange={e => handleFieldChange('company_id', parseInt(e.target.value))}
+                onBlur={() => handleBlur('company_id')}
+                className="w-full"
+              >
+                <option value={0}>Select a company</option>
+                {companies.map((company) => (
+                  <option key={company.id} value={company.id}>
+                    {company.name}
+                  </option>
+                ))}
+              </select>
+              {touched.company_id && errors.company_id && <p className="pt-1 text-sm text-red-500">{errors.company_id}</p>}
+            </div>
           </div>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button type="submit" onClick={handleSave}>Save</Button>
+          <Button type="submit" onClick={handleSave} disabled={isSaveDisabled}>Save</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

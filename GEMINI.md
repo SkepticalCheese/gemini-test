@@ -47,5 +47,6 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Shadcn UI, 
 
 ## Git Hub Workflow
 
-- When creating code for a GitHub issue, create a branch off the "main" branch for the code changes. Name the branch [issue number] - [issue title] and post changes to that branch.
-- Set the issue to "In Progress" status
+- When creating code for a GitHub issue, create a branch off the "master" branch for the code changes. Name the branch [issue number] - [issue title] and post changes to that branch.
+- When you are done with the changes, create a Pull Request from the new branch to master and set the issue to "In Progress" status
+- Use the GitHub MCP Server to perform the actions related to updating issues. Use the Git Hub CLI for the other actions.
