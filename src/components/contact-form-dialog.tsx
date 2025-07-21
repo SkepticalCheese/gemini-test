@@ -66,7 +66,7 @@ const validate = (formData: FormState) => {
   if (!formData.name.trim()) newErrors.name = 'Contact name cannot be empty.';
   if (!formData.email.trim()) {
     newErrors.email = 'Email address cannot be empty.';
-  } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+  } else if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(formData.email)) {
     newErrors.email = 'Email address is invalid.';
   }
   if (!formData.phone.trim()) {

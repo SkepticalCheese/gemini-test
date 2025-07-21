@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gemini Test Project
+
+This is a Next.js project that uses Prisma as an ORM, Auth0 for authentication, and Tailwind CSS with Shadcn UI for styling. Data is stored in a PostgreSQL database. Vitest is used for tests.
 
 ## Getting Started
 
-First, run the development server:
+1. Create an empty PostgreSQL database.  
+1. install the dependencies:  
+`npm install`
+  
+1. Set up your environment variables. Create a `.env.local` file in the root of the project and add the following:  
+AUTH0_SECRET=  
+AUTH0_BASE_URL=  
+AUTH0_ISSUER_BASE_URL=  
+AUTH0_CLIENT_ID=  
+AUTH0_CLIENT_SECRET=  
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=public" 
+1. Run the database migrations:  
+`
+npx prisma migrate dev
+`  
 
-```bash
+## Running the application
+
+1. Run the development server:  
+`
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+`  
+1. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Available Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `npm run dev`: Starts the development server.
+- `npm run build`: Builds the application for production.
+- `npm run start`: Starts a production server.
+- `npm run lint`: Lints the code.
+- `npm run test`: Runs the tests.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Technologies Used
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js](https://nextjs.org/)
+- [Prisma](https://www.prisma.io/)
+- [Auth0](https://auth0.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Shadcn UI](https://ui.shadcn.com/)
+- [Vitest](https://vitest.dev/)
+- [PostgreSQL](https://www.postgresql.org/)
