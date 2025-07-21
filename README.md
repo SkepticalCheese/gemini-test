@@ -4,7 +4,8 @@ This is a Next.js project that uses Prisma as an ORM, Auth0 for authentication, 
 
 ## Getting Started
 
-1. Create an empty PostgreSQL database.  
+1. Create an empty PostgreSQL database.
+1. Setup an Auth0 account.
 1. install the dependencies:  
 `npm install`
   
@@ -14,7 +15,7 @@ AUTH0_BASE_URL=
 AUTH0_ISSUER_BASE_URL=  
 AUTH0_CLIENT_ID=  
 AUTH0_CLIENT_SECRET=  
-DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=public" 
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=public"
 1. Run the database migrations:  
 `
 npx prisma migrate dev
